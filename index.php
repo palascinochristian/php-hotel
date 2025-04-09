@@ -10,8 +10,18 @@
 <body>
 <div class="container my-5">
     <h1 class="mb-4">Hotel List</h1>
+    <hr>
+    <h2> Filtri </h2>
+    <form action="">
+        <input id="parking" name="parking" type="checkbox">
+        <label for="parking"> Parking Avaiable</label>
+        <input id="vote" name="vote" type="checkbox">
+        <label for="vote">Average Vote</label>
 
-    <div class="table-responsive">
+        <button>Filter</button>
+
+
+    <div class="table-responsive mt-5">
         <table class="table table-bordered table-striped table-hover align-middle text-center">
             <thead class="table-dark">
                 <tr>
@@ -62,7 +72,31 @@
                     ],
                 ];
 
+                $parking_filter = false;
+                $average_vote = false;
+                
+                if(isset($_GET['parking']) && $_GET['parking'] == "on"){
+                    $parking_filter = true;
+
+                }
+                if(isset($_GET['vote']) && $_GET['vote'] > 3){
+                    $average_vote = true;
+                }
+
                 foreach ($hotels as $hotel) {
+
+                    if($parking_filter){
+                        if(!$hotel['parking']) {
+                            continue;
+
+                        }
+                    }
+                    if($average_vote){
+                        if($hotel['vote'] <= 3){
+                            continue;
+                        }
+                    }
+
                     echo "<tr>";
                     echo "<td>{$hotel['name']}</td>";
                     echo "<td>{$hotel['description']}</td>";
